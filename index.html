@@ -8,9 +8,17 @@
 
   <style>
     :root{
-      --bg:#f8f9f3;--surface:#fff;--ink:#172d23;--muted:#56675c;
-      --green:#215a3c;--green2:#326b47;--lime:#d6ed9b;--line:#dde4d7;
-      --soft:#edf3e5;--radius:24px;--shadow:0 24px 70px #17332512;
+      --bg:#f8f9f3;
+      --surface:#fff;
+      --ink:#172d23;
+      --muted:#56675c;
+      --green:#215a3c;
+      --green2:#326b47;
+      --lime:#d6ed9b;
+      --line:#dde4d7;
+      --soft:#edf3e5;
+      --radius:24px;
+      --shadow:0 24px 70px #17332512;
     }
 
     *{box-sizing:border-box}
@@ -532,7 +540,8 @@
 
     [hidden]{display:none!important}
 
-    /* REGISTRATION GATE STYLES */
+    /* REGISTRATION GATE */
+
     .registration-gate{
       position:fixed;
       inset:0;
@@ -662,12 +671,18 @@
       padding:17px 20px;
       box-shadow:0 18px 60px #10231733;
       text-align:center;
-      animation: popIn 0.3s ease-out;
+      animation:popIn .3s ease-out
     }
 
-    @keyframes popIn {
-      from { transform: translate(-50%, -20px); opacity: 0; }
-      to { transform: translate(-50%, 0); opacity: 1; }
+    @keyframes popIn{
+      from{
+        transform:translate(-50%,-20px);
+        opacity:0
+      }
+      to{
+        transform:translate(-50%,0);
+        opacity:1
+      }
     }
 
     .registration-notice strong{
@@ -682,17 +697,19 @@
       font-size:.82rem
     }
 
-    /* MEDIA QUERIES FOR RESPONSIVENESS */
     @media(max-width:900px){
       .role-grid{
         grid-template-columns:repeat(2,1fr)
       }
+
       .hero{
         grid-template-columns:1fr
       }
+
       .cards{
         grid-template-columns:1fr
       }
+
       .flow{
         grid-template-columns:repeat(2,1fr)
       }
@@ -709,20 +726,26 @@
         background:var(--bg);
         border-bottom:1px solid var(--line)
       }
+
       nav.open{
         display:flex;
         flex-direction:column
       }
+
       .menu-toggle{
         display:inline-flex
       }
-      .mission,.register-wrap{
+
+      .mission,
+      .register-wrap{
         grid-template-columns:1fr
       }
+
       .consent{
         flex-direction:column;
         align-items:stretch
       }
+
       .consent-actions{
         justify-content:flex-end
       }
@@ -732,21 +755,30 @@
       .container{
         width:min(100% - 28px,1120px)
       }
-      .strip,.role-grid,.flow{
+
+      .strip,
+      .role-grid,
+      .flow{
         grid-template-columns:1fr
       }
-      .hero-art,.hero-image{
+
+      .hero-art,
+      .hero-image{
         min-height:330px
       }
+
       .mission{
         padding:28px
       }
+
       form{
         padding:24px
       }
+
       .registration-gate{
         padding:14px
       }
+
       .registration-gate-box{
         padding:24px;
         border-radius:22px
@@ -757,468 +789,1220 @@
 
 <body>
 
-<!-- REGISTRATION GATE MODAL (UNANG BUBUNGAD SA USER) -->
+<!-- REGISTRATION GATE -->
 <div class="registration-gate" id="registrationGate">
+
   <div class="registration-gate-box">
-    <span class="gate-badge">GAMEFARM REGISTRATION</span>
+
+    <span class="gate-badge">
+      GAMEFARM REGISTRATION
+    </span>
+
     <h2>Before you continue</h2>
-    <p>Register your interest in the GameFarm project before entering the website.</p>
+
+    <p>
+      Register your interest in the GameFarm project before entering the website.
+    </p>
 
     <form class="gate-form" id="gateRegistrationForm">
+
       <label class="gate-field" for="gateFullName">
         Full name *
-        <input id="gateFullName" type="text" autocomplete="name" required minlength="2" maxlength="100" placeholder="Enter your full name">
+        <input
+          id="gateFullName"
+          type="text"
+          autocomplete="name"
+          required
+          minlength="2"
+          maxlength="100"
+          placeholder="Enter your full name">
       </label>
 
       <label class="gate-field" for="gateEmail">
         Email address *
-        <input id="gateEmail" type="email" autocomplete="email" required maxlength="254" placeholder="Enter your email address">
+        <input
+          id="gateEmail"
+          type="email"
+          autocomplete="email"
+          required
+          maxlength="254"
+          placeholder="Enter your email address">
       </label>
 
       <label class="gate-consent">
-        <input type="checkbox" id="gateConsent" required>
-        <span>I agree that the project team may store my name and email to process my GameFarm registration.</span>
+
+        <input
+          type="checkbox"
+          id="gateConsent"
+          required>
+
+        <span>
+          I agree that the project team may store my name and email
+          to process my GameFarm registration.
+        </span>
+
       </label>
 
       <div class="gate-actions">
-        <button class="button" id="gateRegisterButton" type="submit">Register & Continue ↗</button>
-        <button class="button gate-skip" id="continueWithoutRegistering" type="button">Continue Without Registering</button>
+
+        <button
+          class="button"
+          id="gateRegisterButton"
+          type="submit">
+          Register & Continue ↗
+        </button>
+
+        <button
+          class="button gate-skip"
+          id="continueWithoutRegistering"
+          type="button">
+          Continue Without Registering
+        </button>
+
       </div>
 
-      <p class="gate-status" id="gateStatus" aria-live="polite"></p>
+      <p
+        class="gate-status"
+        id="gateStatus"
+        aria-live="polite">
+      </p>
+
     </form>
+
   </div>
+
 </div>
 
-<!-- POP-UP NOTIFICATION FOR SUCCESSFUL REGISTRATION -->
-<div class="registration-notice" id="registrationNotice" hidden>
-  <strong>Successfully Registered! ✓</strong>
-  <p>Thank you. Your registration has been saved successfully.</p>
+
+<!-- SUCCESS NOTICE -->
+
+<div
+  class="registration-notice"
+  id="registrationNotice"
+  hidden>
+
+  <strong>
+    Successfully Registered! ✓
+  </strong>
+
+  <p>
+    Thank you. Your registration has been saved successfully.
+  </p>
+
 </div>
+
 
 <header>
+
   <div class="container nav">
+
     <a href="#main" class="brand">
-      <span class="brand-mark">G</span>GameFarm
+      <span class="brand-mark">G</span>
+      GameFarm
     </a>
 
-    <button class="button outline small menu-toggle" id="menuToggle" aria-controls="navigation" aria-expanded="false">
+    <button
+      class="button outline small menu-toggle"
+      id="menuToggle"
+      aria-controls="navigation"
+      aria-expanded="false">
       Menu
     </button>
 
     <nav id="navigation">
-      <a href="#about">The project</a>
-      <a href="#features">Features</a>
-      <a href="#roles">Roles</a>
-      <a href="#faq">Questions</a>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLScxbbjiFIJ3dhusiKE1BDFxa96NMj2PiiYKB3r4gQoI5g1RZg/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="button small">SURVEY ↗</a>
-      <a href="#register" class="button small">Register Interest ↗</a>
+
+      <a href="#about">
+        The project
+      </a>
+
+      <a href="#features">
+        Features
+      </a>
+
+      <a href="#roles">
+        Roles
+      </a>
+
+      <a href="#faq">
+        Questions
+      </a>
+
+      <a
+        href="https://docs.google.com/forms/d/e/1FAIpQLScxbbjiFIJ3dhusiKE1BDFxa96NMj2PiiYKB3r4gQoI5g1RZg/viewform?usp=dialog"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="button small">
+        SURVEY ↗
+      </a>
+
+      <a href="#register" class="button small">
+        Register Interest ↗
+      </a>
+
     </nav>
+
   </div>
+
 </header>
 
+
 <main id="main">
-  <div class="container">
 
-    <section class="hero">
-      <div>
-        <span class="eyebrow badge">
-          <span class="dot"></span>
-          Introducing GameFarm
-        </span>
+<div class="container">
 
-        <h1>Plan better.<br>Work smarter.<br><em>Grow together.</em></h1>
-        <p class="lead">GameFarm is a web-based Planning and Development Management System designed to organize farm activities, schedules, records, tasks, and development information in one centralized local platform.</p>
 
-        <div class="actions">
-          <a href="#about" class="button">Explore GameFarm ↗</a>
-          <a href="#features" class="button outline">View Features</a>
-        </div>
+<!-- HERO -->
 
-        <p class="fine">Designed for authorized Farm Owners/Administrators, Breeders, Trainers, and Farm Staff.</p>
-      </div>
+<section class="hero">
 
-      <div class="hero-art">
-        <img id="heroImage" class="hero-image" src="cock.png" alt="GameFarm project image">
-        <div class="image-overlay"></div>
-        <span class="image-label">GAMEFARM / PLANNING & DEVELOPMENT</span>
-        <div class="art-card">
-          <strong>One farm. One organized workspace.</strong>
-          <span>Plan activities, assign work, manage development, and review farm information.</span>
-        </div>
-      </div>
-    </section>
+  <div>
 
-    <div class="strip">
-      <span>01 &nbsp; Centralized Farm Management</span>
-      <span>02 &nbsp; Role-Based Access</span>
-      <span>03 &nbsp; Offline Local Environment</span>
+    <span class="eyebrow badge">
+      <span class="dot"></span>
+      Introducing GameFarm
+    </span>
+
+    <h1>
+      Plan better.<br>
+      Work smarter.<br>
+      <em>Grow together.</em>
+    </h1>
+
+    <p class="lead">
+      GameFarm is a web-based Planning and Development Management
+      System designed to organize farm activities, schedules,
+      records, tasks, and development information in one centralized
+      local platform.
+    </p>
+
+    <div class="actions">
+
+      <a href="#about" class="button">
+        Explore GameFarm ↗
+      </a>
+
+      <a href="#features" class="button outline">
+        View Features
+      </a>
+
     </div>
 
-    <section class="section" id="about">
-      <div class="section-heading">
-        <span class="eyebrow">The project</span>
-        <h2>Get to know GameFarm.</h2>
-        <p>The proposed system addresses the difficulty of manually handling feeding, health care, breeding, conditioning, incubation, growth monitoring, and farm maintenance.</p>
-      </div>
-
-      <div class="mission">
-        <div>
-          <span class="eyebrow">Our purpose</span>
-          <h2>Organize, schedule, assign, and monitor farm activities in one place.</h2>
-        </div>
-        <div>
-          <p>GameFarm provides a centralized platform that helps users identify what needs to be done, when it should be done, and who is assigned to perform the task.</p>
-          <a href="#features" class="button light">See system features ↗</a>
-        </div>
-      </div>
-
-      <div style="height:24px"></div>
-
-      <p class="draft">
-        <strong>Implementation:</strong> The proposed system is intended for the SM (Salvador Montilla) GameFarm in Tacurong City. It is designed as a web-based system that can operate offline through a local environment and be accessed through a browser on supported devices.
-      </p>
-    </section>
-
-    <section class="section" id="features">
-      <div class="section-heading">
-        <span class="eyebrow">System features</span>
-        <h2>Everything is connected around the farm workflow.</h2>
-        <p>These features are based on the proposed GameFarm system described in the project document.</p>
-      </div>
-
-      <div class="cards">
-        <article class="card">
-          <span class="number">01</span>
-          <h3>Smart Farm Planner</h3>
-          <p>Organizes and plans different farm activities so users can see what needs to be done and when.</p>
-        </article>
-
-        <article class="card">
-          <span class="number">02</span>
-          <h3>Farm Activity Management</h3>
-          <p>Creates and manages schedules for feeding, health care, conditioning, and other farm activities while helping identify overlapping activities.</p>
-        </article>
-
-        <article class="card">
-          <span class="number">03</span>
-          <h3>Breeding, Incubation & Growth</h3>
-          <p>Organizes breeding records, parentage, offspring, bloodline relationships, incubation timelines, reminders, and growth progress.</p>
-        </article>
-
-        <article class="card">
-          <span class="number">04</span>
-          <h3>Maintenance & Inventory</h3>
-          <p>Organizes farm and equipment maintenance activities and monitors farm supplies and resources through integrated inventory management.</p>
-        </article>
-
-        <article class="card">
-          <span class="number">05</span>
-          <h3>Conflict & Workload Management</h3>
-          <p>Identifies conflicting or overlapping schedules and helps distribute tasks among staff.</p>
-        </article>
-
-        <article class="card">
-          <span class="number">06</span>
-          <h3>Farm Dashboard</h3>
-          <p>Displays upcoming tasks, progress, and important farm information for easier review.</p>
-        </article>
-
-        <article class="card">
-          <span class="number">07</span>
-          <h3>Reports & Analytics</h3>
-          <p>Provides organized reports for farm activities and records to support review and management.</p>
-        </article>
-
-        <article class="card">
-          <span class="number">08</span>
-          <h3>Centralized Farm Information</h3>
-          <p>Keeps farm planning, records, task assignments, development information, and important information within one local platform.</p>
-        </article>
-
-        <article class="card">
-          <span class="number">09</span>
-          <h3>Role-Based Access</h3>
-          <p>Authorized users access functions according to their assigned role: Farm Owner/Administrator, Breeder, Trainer, or Farm Staff.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="roles">
-      <div class="section-heading">
-        <span class="eyebrow">Role-based access</span>
-        <h2>Different users. Different responsibilities.</h2>
-        <p>Each role is given access that matches its responsibilities in the farm workflow.</p>
-      </div>
-
-      <div class="role-grid">
-        <article class="role">
-          <span class="role-tag">Administrator</span>
-          <h3>Farm Owner / Administrator</h3>
-          <ul>
-            <li>Manages overall farm operations</li>
-            <li>Manages users and farm information</li>
-            <li>Reviews schedules, reports, and dashboards</li>
-          </ul>
-        </article>
-
-        <article class="role">
-          <span class="role-tag">Breeding</span>
-          <h3>Breeder</h3>
-          <ul>
-            <li>Manages breeding records</li>
-            <li>Views pedigree relationships</li>
-            <li>Plans breeding activities</li>
-            <li>Monitors development information</li>
-          </ul>
-        </article>
-
-        <article class="role">
-          <span class="role-tag">Conditioning</span>
-          <h3>Trainer</h3>
-          <ul>
-            <li>Manages conditioning activities</li>
-            <li>Views conditioning schedules</li>
-            <li>Records development-related activities</li>
-          </ul>
-        </article>
-
-        <article class="role">
-          <span class="role-tag">Operations</span>
-          <h3>Farm Staff</h3>
-          <ul>
-            <li>Views assigned tasks</li>
-            <li>Follows feeding and maintenance schedules</li>
-            <li>Updates the status of assigned activities</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-heading">
-        <span class="eyebrow">System workflow</span>
-        <h2>From planning to final review.</h2>
-        <p>The workflow connects scheduling, assignments, activity updates, progress monitoring, and review.</p>
-      </div>
-
-      <div class="flow">
-        <div class="flow-step">
-          <strong>01 — Plan</strong>
-          <p>Create and organize farm activities and schedules.</p>
-        </div>
-        <div class="flow-step">
-          <strong>02 — Assign</strong>
-          <p>Check conflicts and workload, then assign tasks.</p>
-        </div>
-        <div class="flow-step">
-          <strong>03 — Perform & Update</strong>
-          <p>Users perform assigned activities and submit status updates.</p>
-        </div>
-        <div class="flow-step">
-          <strong>04 — Monitor & Review</strong>
-          <p>Review dashboards, progress, records, and reports.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="register">
-      <div class="register-wrap">
-        <div>
-          <span class="eyebrow">Take the next step</span>
-          <h2>Interested?<br>Let’s keep in touch.</h2>
-          <p class="lead">Register your interest in the GameFarm project using the form.</p>
-
-          <div class="flow" style="grid-template-columns:1fr">
-            <div class="flow-step">
-              <strong>Explore</strong>
-              <p>Learn about the purpose, features, roles, and workflow.</p>
-            </div>
-            <div class="flow-step">
-              <strong>Register</strong>
-              <p>Share your name and email to record your interest.</p>
-            </div>
-            <div class="flow-step">
-              <strong>Confirmation</strong>
-              <p>A confirmation appears after the server confirms the registration.</p>
-            </div>
-          </div>
-        </div>
-
-        <form id="registrationForm" aria-describedby="formStatus">
-          <h3>Register your interest</h3>
-          <p class="fine">Fields marked * are required.</p>
-
-          <label class="field" for="fullName">
-            Full name *
-            <input id="fullName" name="fullName" autocomplete="name" required minlength="2" maxlength="100">
-          </label>
-
-          <label class="field" for="email">
-            Email address *
-            <input id="email" name="email" type="email" autocomplete="email" required maxlength="254">
-          </label>
-
-          <label class="check">
-            <input type="checkbox" id="registrationConsent" required>
-            <span>
-              I agree that the project team may store my name and email to process my GameFarm registration.
-              <a href="#privacy">Read the privacy notice.</a>
-            </span>
-          </label>
-
-          <p class="fine">Analytics are optional. You can register without accepting analytics.</p>
-
-          <button class="button" id="submitButton" type="submit">Register my interest ↗</button>
-
-          <p class="status" id="formStatus" role="status" aria-live="polite"></p>
-        </form>
-      </div>
-    </section>
-
-    <section class="section" id="faq">
-      <div class="section-heading">
-        <span class="eyebrow">Good to know</span>
-        <h2>A few quick answers.</h2>
-      </div>
-
-      <details>
-        <summary>Where will GameFarm be used?</summary>
-        <p>The proposed system will be implemented at the SM (Salvador Montilla) GameFarm in Tacurong City as a web-based system that can operate offline through a local environment.</p>
-      </details>
-
-      <details>
-        <summary>Who can access the system?</summary>
-        <p>Authorized users include the Farm Owner/Administrator, Breeder, Trainer, and Farm Staff, with access based on their assigned roles.</p>
-      </details>
-
-      <details>
-        <summary>Does the system require internet?</summary>
-        <p>The project document describes GameFarm as a web-based system that can operate offline through a local environment, so internet access is not required for the local operation described in the proposal.</p>
-      </details>
-
-      <details>
-        <summary>What does role-based access mean?</summary>
-        <p>It means each authorized user works with functions related to their responsibility. For example, the Administrator manages users and farm information, the Breeder handles breeding records, the Trainer handles conditioning activities, and Farm Staff handles assigned operational tasks.</p>
-      </details>
-
-      <details id="privacy">
-        <summary>How is my registration information used?</summary>
-        <p>Registration information is stored in the project team's private Google Sheet. Analytics are optional and can be declined without affecting registration.</p>
-        <button class="button outline small" type="button" id="privacyPreferences" style="margin-top:12px">Change analytics preferences</button>
-      </details>
-    </section>
+    <p class="fine">
+      Designed for authorized Farm Owners/Administrators,
+      Breeders, Trainers, and Farm Staff.
+    </p>
 
   </div>
+
+
+  <div class="hero-art">
+
+    <img
+      id="heroImage"
+      class="hero-image"
+      src="cock.png"
+      alt="GameFarm project image">
+
+    <div class="image-overlay"></div>
+
+    <span class="image-label">
+      GAMEFARM / PLANNING & DEVELOPMENT
+    </span>
+
+    <div class="art-card">
+
+      <strong>
+        One farm. One organized workspace.
+      </strong>
+
+      <span>
+        Plan activities, assign work, manage development,
+        and review farm information.
+      </span>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<div class="strip">
+
+  <span>
+    01 &nbsp; Centralized Farm Management
+  </span>
+
+  <span>
+    02 &nbsp; Role-Based Access
+  </span>
+
+  <span>
+    03 &nbsp; Offline Local Environment
+  </span>
+
+</div>
+
+
+<!-- ABOUT -->
+
+<section class="section" id="about">
+
+  <div class="section-heading">
+
+    <span class="eyebrow">
+      The project
+    </span>
+
+    <h2>
+      Get to know GameFarm.
+    </h2>
+
+    <p>
+      The proposed system addresses the difficulty of manually
+      handling feeding, health care, breeding, conditioning,
+      incubation, growth monitoring, and farm maintenance.
+    </p>
+
+  </div>
+
+
+  <div class="mission">
+
+    <div>
+
+      <span class="eyebrow">
+        Our purpose
+      </span>
+
+      <h2>
+        Organize, schedule, assign, and monitor farm activities
+        in one place.
+      </h2>
+
+    </div>
+
+
+    <div>
+
+      <p>
+        GameFarm provides a centralized platform that helps users
+        identify what needs to be done, when it should be done,
+        and who is assigned to perform the task.
+      </p>
+
+      <a href="#features" class="button light">
+        See system features ↗
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <div style="height:24px"></div>
+
+
+  <p class="draft">
+
+    <strong>Implementation:</strong>
+
+    The proposed system is intended for the SM (Salvador Montilla)
+    GameFarm in Tacurong City. It is designed as a web-based system
+    that can operate offline through a local environment and be
+    accessed through a browser on supported devices.
+
+  </p>
+
+</section>
+
+
+<!-- FEATURES -->
+
+<section class="section" id="features">
+
+  <div class="section-heading">
+
+    <span class="eyebrow">
+      System features
+    </span>
+
+    <h2>
+      Everything is connected around the farm workflow.
+    </h2>
+
+    <p>
+      These features are based on the proposed GameFarm system
+      described in the project document.
+    </p>
+
+  </div>
+
+
+  <div class="cards">
+
+    <article class="card">
+      <span class="number">01</span>
+      <h3>Smart Farm Planner</h3>
+      <p>
+        Organizes and plans different farm activities so users
+        can see what needs to be done and when.
+      </p>
+    </article>
+
+    <article class="card">
+      <span class="number">02</span>
+      <h3>Farm Activity Management</h3>
+      <p>
+        Creates and manages schedules for feeding, health care,
+        conditioning, and other farm activities while helping
+        identify overlapping activities.
+      </p>
+    </article>
+
+    <article class="card">
+      <span class="number">03</span>
+      <h3>Breeding, Incubation & Growth</h3>
+      <p>
+        Organizes breeding records, parentage, offspring,
+        bloodline relationships, incubation timelines,
+        reminders, and growth progress.
+      </p>
+    </article>
+
+    <article class="card">
+      <span class="number">04</span>
+      <h3>Maintenance & Inventory</h3>
+      <p>
+        Organizes farm and equipment maintenance activities
+        and monitors farm supplies and resources through
+        integrated inventory management.
+      </p>
+    </article>
+
+    <article class="card">
+      <span class="number">05</span>
+      <h3>Conflict & Workload Management</h3>
+      <p>
+        Identifies conflicting or overlapping schedules and
+        helps distribute tasks among staff.
+      </p>
+    </article>
+
+    <article class="card">
+      <span class="number">06</span>
+      <h3>Farm Dashboard</h3>
+      <p>
+        Displays upcoming tasks, progress, and important
+        farm information for easier review.
+      </p>
+    </article>
+
+    <article class="card">
+      <span class="number">07</span>
+      <h3>Reports & Analytics</h3>
+      <p>
+        Provides organized reports for farm activities
+        and records to support review and management.
+      </p>
+    </article>
+
+    <article class="card">
+      <span class="number">08</span>
+      <h3>Centralized Farm Information</h3>
+      <p>
+        Keeps farm planning, records, task assignments,
+        development information, and important information
+        within one local platform.
+      </p>
+    </article>
+
+    <article class="card">
+      <span class="number">09</span>
+      <h3>Role-Based Access</h3>
+      <p>
+        Authorized users access functions according to
+        their assigned role: Farm Owner/Administrator,
+        Breeder, Trainer, or Farm Staff.
+      </p>
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- ROLES -->
+
+<section class="section" id="roles">
+
+  <div class="section-heading">
+
+    <span class="eyebrow">
+      Role-based access
+    </span>
+
+    <h2>
+      Different users. Different responsibilities.
+    </h2>
+
+    <p>
+      Each role is given access that matches its responsibilities
+      in the farm workflow.
+    </p>
+
+  </div>
+
+
+  <div class="role-grid">
+
+    <article class="role">
+
+      <span class="role-tag">
+        Administrator
+      </span>
+
+      <h3>
+        Farm Owner / Administrator
+      </h3>
+
+      <ul>
+        <li>Manages overall farm operations</li>
+        <li>Manages users and farm information</li>
+        <li>Reviews schedules, reports, and dashboards</li>
+      </ul>
+
+    </article>
+
+
+    <article class="role">
+
+      <span class="role-tag">
+        Breeding
+      </span>
+
+      <h3>
+        Breeder
+      </h3>
+
+      <ul>
+        <li>Manages breeding records</li>
+        <li>Views pedigree relationships</li>
+        <li>Plans breeding activities</li>
+        <li>Monitors development information</li>
+      </ul>
+
+    </article>
+
+
+    <article class="role">
+
+      <span class="role-tag">
+        Conditioning
+      </span>
+
+      <h3>
+        Trainer
+      </h3>
+
+      <ul>
+        <li>Manages conditioning activities</li>
+        <li>Views conditioning schedules</li>
+        <li>Records development-related activities</li>
+      </ul>
+
+    </article>
+
+
+    <article class="role">
+
+      <span class="role-tag">
+        Operations
+      </span>
+
+      <h3>
+        Farm Staff
+      </h3>
+
+      <ul>
+        <li>Views assigned tasks</li>
+        <li>Follows feeding and maintenance schedules</li>
+        <li>Updates the status of assigned activities</li>
+      </ul>
+
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- WORKFLOW -->
+
+<section class="section">
+
+  <div class="section-heading">
+
+    <span class="eyebrow">
+      System workflow
+    </span>
+
+    <h2>
+      From planning to final review.
+    </h2>
+
+    <p>
+      The workflow connects scheduling, assignments,
+      activity updates, progress monitoring, and review.
+    </p>
+
+  </div>
+
+
+  <div class="flow">
+
+    <div class="flow-step">
+      <strong>01 — Plan</strong>
+      <p>
+        Create and organize farm activities and schedules.
+      </p>
+    </div>
+
+    <div class="flow-step">
+      <strong>02 — Assign</strong>
+      <p>
+        Check conflicts and workload, then assign tasks.
+      </p>
+    </div>
+
+    <div class="flow-step">
+      <strong>03 — Perform & Update</strong>
+      <p>
+        Users perform assigned activities and submit status updates.
+      </p>
+    </div>
+
+    <div class="flow-step">
+      <strong>04 — Monitor & Review</strong>
+      <p>
+        Review dashboards, progress, records, and reports.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- REGISTER -->
+
+<section class="section" id="register">
+
+  <div class="register-wrap">
+
+    <div>
+
+      <span class="eyebrow">
+        Take the next step
+      </span>
+
+      <h2>
+        Interested?<br>
+        Let’s keep in touch.
+      </h2>
+
+      <p class="lead">
+        Register your interest in the GameFarm project using the form.
+      </p>
+
+
+      <div class="flow" style="grid-template-columns:1fr">
+
+        <div class="flow-step">
+          <strong>Explore</strong>
+          <p>
+            Learn about the purpose, features, roles, and workflow.
+          </p>
+        </div>
+
+        <div class="flow-step">
+          <strong>Register</strong>
+          <p>
+            Share your name and email to record your interest.
+          </p>
+        </div>
+
+        <div class="flow-step">
+          <strong>Confirmation</strong>
+          <p>
+            Complete the registration form and return to the website.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <form id="registrationForm">
+
+      <h3>
+        Register your interest
+      </h3>
+
+      <p class="fine">
+        Fields marked * are required.
+      </p>
+
+
+      <label class="field" for="fullName">
+
+        Full name *
+
+        <input
+          id="fullName"
+          name="fullName"
+          autocomplete="name"
+          required
+          minlength="2"
+          maxlength="100">
+
+      </label>
+
+
+      <label class="field" for="email">
+
+        Email address *
+
+        <input
+          id="email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          maxlength="254">
+
+      </label>
+
+
+      <label class="check">
+
+        <input
+          type="checkbox"
+          id="registrationConsent"
+          required>
+
+        <span>
+          I agree that the project team may store my name and email
+          to process my GameFarm registration.
+          <a href="#privacy">
+            Read the privacy notice.
+          </a>
+        </span>
+
+      </label>
+
+
+      <button
+        class="button"
+        id="submitButton"
+        type="submit">
+
+        Register my interest ↗
+
+      </button>
+
+
+      <p
+        class="status"
+        id="formStatus"
+        role="status"
+        aria-live="polite">
+      </p>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+<!-- FAQ -->
+
+<section class="section" id="faq">
+
+  <div class="section-heading">
+
+    <span class="eyebrow">
+      Good to know
+    </span>
+
+    <h2>
+      A few quick answers.
+    </h2>
+
+  </div>
+
+
+  <details>
+
+    <summary>
+      Where will GameFarm be used?
+    </summary>
+
+    <p>
+      The proposed system will be implemented at the SM
+      (Salvador Montilla) GameFarm in Tacurong City as a
+      web-based system that can operate offline through
+      a local environment.
+    </p>
+
+  </details>
+
+
+  <details>
+
+    <summary>
+      Who can access the system?
+    </summary>
+
+    <p>
+      Authorized users include the Farm Owner/Administrator,
+      Breeder, Trainer, and Farm Staff, with access based
+      on their assigned roles.
+    </p>
+
+  </details>
+
+
+  <details>
+
+    <summary>
+      Does the system require internet?
+    </summary>
+
+    <p>
+      The project document describes GameFarm as a web-based
+      system that can operate offline through a local environment,
+      so internet access is not required for the local operation
+      described in the proposal.
+    </p>
+
+  </details>
+
+
+  <details>
+
+    <summary>
+      What does role-based access mean?
+    </summary>
+
+    <p>
+      It means each authorized user works with functions related
+      to their responsibility. For example, the Administrator
+      manages users and farm information, the Breeder handles
+      breeding records, the Trainer handles conditioning activities,
+      and Farm Staff handles assigned operational tasks.
+    </p>
+
+  </details>
+
+
+  <details id="privacy">
+
+    <summary>
+      How is my registration information used?
+    </summary>
+
+    <p>
+      Registration information is used to process the user's
+      GameFarm registration. The information collected through
+      Google Forms is stored in the connected Google Sheet.
+    </p>
+
+  </details>
+
+</section>
+
+</div>
+
 </main>
 
+
+<!-- FOOTER -->
+
 <footer>
+
   <div class="container footer-row">
+
     <a href="#main" class="brand">
-      <span class="brand-mark">G</span>GameFarm
+      <span class="brand-mark">G</span>
+      GameFarm
     </a>
 
-    <span class="fine">Discover the project. Decide what comes next.</span>
-    <span class="mode" id="trackingMode">Preview — local storage active</span>
+    <span class="fine">
+      Discover the project. Decide what comes next.
+    </span>
+
+    <span class="mode">
+      Google Form registration active
+    </span>
+
   </div>
+
 </footer>
 
-<aside class="consent" id="consentBanner" aria-label="Analytics preferences" hidden>
-  <p>
-    <strong>Your privacy, your choice.</strong>
-    Optional first-party analytics help count Learn More clicks and subsequent registrations. Registration works either way.
-  </p>
-  <div class="consent-actions">
-    <button class="button outline small" id="declineAnalytics" type="button">Decline</button>
-    <button class="button small" id="acceptAnalytics" type="button">Accept analytics</button>
-  </div>
-</aside>
 
 <script>
 "use strict";
 
-const $ = id => document.getElementById(id);
+/* ================================
+   GOOGLE FORM SETTINGS
+================================ */
+
+const GOOGLE_FORM_ACTION =
+  "https://docs.google.com/forms/d/e/1FAIpQLScxbbjiFIJ3dhusiKE1BDFxa96NMj2PiiYKB3r4gQoI5g1RZg/formResponse";
+
+const REGISTRATION_STATUS_ENTRY = "entry.571604446";
+
+
+/* ================================
+   GOOGLE FORM SILENT SUBMISSION
+================================ */
+
+function saveRegistrationStatus(status) {
+  return new Promise((resolve) => {
+
+    // Hidden iframe
+    const iframe = document.createElement("iframe");
+    iframe.name = "googleFormHiddenFrame";
+    iframe.style.display = "none";
+
+    document.body.appendChild(iframe);
+
+    // Hidden form
+    const form = document.createElement("form");
+
+    form.action = GOOGLE_FORM_ACTION;
+    form.method = "POST";
+    form.target = "googleFormHiddenFrame";
+    form.style.display = "none";
+
+    // Registration Status
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = REGISTRATION_STATUS_ENTRY;
+    input.value = status;
+
+    form.appendChild(input);
+    document.body.appendChild(form);
+
+    // Submit silently
+    form.submit();
+
+    // Give Google Forms time to receive the response
+    setTimeout(() => {
+      form.remove();
+      iframe.remove();
+      resolve();
+    }, 800);
+  });
+}
+
+
+/* ================================
+   ELEMENTS
+================================ */
+
+const $ = (id) => document.getElementById(id);
+
+
+/* ================================
+   REGISTRATION NOTICE
+================================ */
 
 function showRegistrationNotice() {
   const notice = $("registrationNotice");
+
+  if (!notice) return;
+
   notice.hidden = false;
+
   setTimeout(() => {
     notice.hidden = true;
   }, 4000);
 }
 
+
+/* ================================
+   FORM STATUS
+================================ */
+
 function showFormStatus(message, type = "") {
-  $("formStatus").textContent = message;
-  $("formStatus").className = `status ${type}`;
+  const status = $("formStatus");
+
+  if (!status) return;
+
+  status.textContent = message;
+  status.className = `status ${type}`;
 }
 
-// FORM AT FOOTER/BODY
-$("registrationForm").addEventListener("submit", async e => {
-  e.preventDefault();
-  if (!$("registrationForm").reportValidity()) return;
 
-  const btn = $("submitButton");
-  btn.disabled = true;
-  btn.textContent = "Saving…";
+/* ================================
+   FOOTER REGISTRATION FORM
+================================ */
 
-  setTimeout(() => {
-    showFormStatus("Successfully Registered!", "success");
-    showRegistrationNotice();
-    $("registrationForm").reset();
-    btn.disabled = false;
-    btn.textContent = "Register my interest ↗";
-  }, 600);
-});
+const registrationForm = $("registrationForm");
 
-// NAVIGATION MENU TOGGLE
-$("menuToggle").addEventListener("click", () => {
-  const open = $("navigation").classList.toggle("open");
-  $("menuToggle").setAttribute("aria-expanded", String(open));
-});
+if (registrationForm) {
 
-$("navigation").querySelectorAll("a").forEach(a => {
-  a.addEventListener("click", () => {
-    $("navigation").classList.remove("open");
-    $("menuToggle").setAttribute("aria-expanded", "false");
+  registrationForm.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    if (!registrationForm.reportValidity()) {
+      return;
+    }
+
+    const button = $("submitButton");
+
+    if (button) {
+      button.disabled = true;
+      button.textContent = "Saving…";
+    }
+
+    showFormStatus("Saving your registration...");
+
+    try {
+
+      await saveRegistrationStatus("Registered");
+
+      showFormStatus(
+        "Successfully Registered!",
+        "success"
+      );
+
+      showRegistrationNotice();
+
+      registrationForm.reset();
+
+    } catch (error) {
+
+      console.error(error);
+
+      showFormStatus(
+        "Something went wrong. Please try again.",
+        "error"
+      );
+
+    } finally {
+
+      if (button) {
+        button.disabled = false;
+        button.textContent = "Register my interest ↗";
+      }
+
+    }
   });
-});
-
-/* INITIAL REGISTRATION GATE FUNCTIONALITY */
-function hideRegistrationGate() {
-  $("registrationGate").hidden = true;
 }
+
+
+/* ================================
+   MOBILE MENU
+================================ */
+
+const menuToggle = $("menuToggle");
+const navigation = $("navigation");
+
+if (menuToggle && navigation) {
+
+  menuToggle.addEventListener("click", () => {
+
+    const open = navigation.classList.toggle("open");
+
+    menuToggle.setAttribute(
+      "aria-expanded",
+      String(open)
+    );
+
+  });
+
+  navigation.querySelectorAll("a").forEach((a) => {
+
+    a.addEventListener("click", () => {
+
+      navigation.classList.remove("open");
+
+      menuToggle.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+    });
+
+  });
+}
+
+
+/* ================================
+   REGISTRATION GATE
+================================ */
+
+function hideRegistrationGate() {
+
+  const gate = $("registrationGate");
+
+  if (gate) {
+    gate.hidden = true;
+  }
+
+}
+
 
 function setGateStatus(message, type = "") {
-  $("gateStatus").textContent = message;
-  $("gateStatus").className = `gate-status ${type}`;
+
+  const status = $("gateStatus");
+
+  if (!status) return;
+
+  status.textContent = message;
+  status.className = `gate-status ${type}`;
+
 }
 
-// GATE FORM SUBMISSION
-$("gateRegistrationForm").addEventListener("submit", async e => {
-  e.preventDefault();
-  if (!$("gateRegistrationForm").reportValidity()) return;
 
-  const button = $("gateRegisterButton");
-  button.disabled = true;
-  button.textContent = "Registering…";
-  setGateStatus("Registering your information...");
+/* ================================
+   REGISTER & CONTINUE
+================================ */
 
-  setTimeout(() => {
-    setGateStatus("Successfully Registered!", "success");
+const gateRegistrationForm = $("gateRegistrationForm");
 
-    setTimeout(() => {
-      hideRegistrationGate();
-      showRegistrationNotice();
-      button.disabled = false;
-      button.textContent = "Register & Continue ↗";
-    }, 700);
-  }, 600);
-});
+if (gateRegistrationForm) {
 
-$("continueWithoutRegistering").addEventListener("click", () => {
-  hideRegistrationGate();
-});
+  gateRegistrationForm.addEventListener(
+    "submit",
+    async (e) => {
+
+      e.preventDefault();
+
+      if (!gateRegistrationForm.reportValidity()) {
+        return;
+      }
+
+      const button = $("gateRegisterButton");
+
+      if (button) {
+        button.disabled = true;
+        button.textContent = "Registering…";
+      }
+
+      setGateStatus(
+        "Saving your registration..."
+      );
+
+      try {
+
+        // Save "Registered" to Google Forms
+        await saveRegistrationStatus("Registered");
+
+        setGateStatus(
+          "Successfully Registered!",
+          "success"
+        );
+
+        setTimeout(() => {
+
+          hideRegistrationGate();
+
+          showRegistrationNotice();
+
+          if (button) {
+            button.disabled = false;
+            button.textContent =
+              "Register & Continue ↗";
+          }
+
+        }, 500);
+
+      } catch (error) {
+
+        console.error(error);
+
+        setGateStatus(
+          "Unable to save registration. Please try again.",
+          "error"
+        );
+
+        if (button) {
+          button.disabled = false;
+          button.textContent =
+            "Register & Continue ↗";
+        }
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ================================
+   CONTINUE WITHOUT REGISTERING
+================================ */
+
+const continueWithoutRegistering =
+  $("continueWithoutRegistering");
+
+if (continueWithoutRegistering) {
+
+  continueWithoutRegistering.addEventListener(
+    "click",
+    async () => {
+
+      continueWithoutRegistering.disabled = true;
+
+      setGateStatus(
+        "Saving your response..."
+      );
+
+      try {
+
+        // Save "Not yet registered" to Google Forms
+        await saveRegistrationStatus(
+          "Not yet registered"
+        );
+
+        setGateStatus(
+          "Continuing...",
+          "success"
+        );
+
+        setTimeout(() => {
+
+          hideRegistrationGate();
+
+          continueWithoutRegistering.disabled = false;
+
+        }, 400);
+
+      } catch (error) {
+
+        console.error(error);
+
+        setGateStatus(
+          "Unable to save response. Please try again.",
+          "error"
+        );
+
+        continueWithoutRegistering.disabled = false;
+
+      }
+
+    }
+  );
+
+}
 </script>
-
 </body>
 </html>
