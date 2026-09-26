@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>GameFarm — Planning & Development Management System</title>
+  <style>
+    :root{
+      --bg:#f8f9f3;--surface:#fff;--ink:#172d23;--muted:#56675c;
+      --green:#215a3c;--green2:#326b47;--lime:#d6ed9b;--line:#dde4d7;
+      --soft:#edf3e5;--radius:24px;--shadow:0 24px 70px #17332512;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:100px}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;line-height:1.6}
+    button,input{font:inherit}button,a,input{-webkit-tap-highlight-color:transparent}
+    a{color:inherit}button{cursor:pointer}:focus-visible{outline:3px solid #b67617;outline-offset:5px}
+    .container{width:min(1120px,calc(100% - 40px));margin:auto}
+    header{position:sticky;top:0;z-index:20;background:#f8f9f3f2;border-bottom:1px solid var(--line);backdrop-filter:blur(16px)}
+    .nav{display:flex;align-items:center;justify-content:space-between;min-height:84px;gap:20px}
+    .brand{text-decoration:none;font-size:1.4rem;font-weight:850;letter-spacing:-.06em;display:flex;align-items:center;gap:10px}
+    .brand-mark{width:36px;height:36px;display:grid;place-items:center;background:var(--green);color:var(--lime);border-radius:12px 12px 12px 3px;font-weight:900}
+    nav{display:flex;align-items:center;gap:24px}
+    nav a{text-decoration:none;font-size:.88rem;font-weight:650}
+    .button{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 22px;border:1px solid transparent;border-radius:100px;background:var(--green);color:#fff;font-weight:700;text-decoration:none;transition:.2s}
+    .button:hover{background:#173f2b;transform:translateY(-2px)}
+    .button.light{background:var(--lime);color:var(--ink)}
+    .button.outline{background:transparent;color:var(--ink);border-color:var(--line)}
+    .button.small{padding:10px 17px;font-size:.86rem}
+    .menu-toggle{display:none}
+
+    .hero{padding:70px 0 62px;display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:58px}
+    .eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+    .badge{display:inline-flex;align-items:center;gap:9px;padding:7px 13px;border:1px solid var(--line);border-radius:100px;background:#fff9}
+    .dot{width:7px;height:7px;background:var(--green);border-radius:50%}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-size:clamp(3rem,6vw,5.1rem);letter-spacing:-.065em;line-height:1.03;margin:24px 0}
+    h1 em{font-style:normal;color:var(--green)}
+    h2{font-size:clamp(2rem,4vw,3rem);letter-spacing:-.045em;line-height:1.12;margin-bottom:18px}
+    h3{letter-spacing:-.02em;font-size:1.12rem}
+    .lead{color:var(--muted);font-size:1.05rem;max-width:560px}
+    .actions{display:flex;align-items:center;flex-wrap:wrap;gap:14px;margin:27px 0 14px}
+    .fine{font-size:.8rem;color:var(--muted)}
+    .hero-art{position:relative;min-height:455px;overflow:hidden;border-radius:34px;background:#dfebd4;border:1px solid #d1dec7;box-shadow:var(--shadow)}
+    .hero-image{width:100%;height:100%;min-height:455px;display:block;object-fit:cover}
+    .image-overlay{position:absolute;inset:0;background:linear-gradient(180deg,#17332518 0%,transparent 42%,#17332525 100%);pointer-events:none}
+    .image-label{position:absolute;top:22px;left:24px;padding:8px 12px;border-radius:100px;background:#ffffffdd;font-size:.68rem;letter-spacing:.13em;font-weight:800}
+    .art-card{position:absolute;bottom:24px;left:24px;right:24px;background:#fffffff0;border:1px solid #fff;border-radius:18px;padding:18px}
+    .art-card strong{display:block;font-size:1.08rem}
+    .art-card span{color:var(--muted);font-size:.82rem}
+
+    .strip{display:grid;grid-template-columns:repeat(3,1fr);border-block:1px solid var(--line);padding:21px 0;gap:15px;font-size:.86rem;font-weight:650}
+    .strip span{text-align:center}
+    section.section{padding:82px 0}
+    .section-heading{max-width:700px;margin-bottom:32px}
+    .section-heading p{color:var(--muted)}
+    .draft{background:#fff5d7;border:1px solid #ead499;border-radius:12px;padding:12px 16px;font-size:.84rem}
+
+    .mission{background:var(--green);color:#fff;border-radius:30px;padding:42px;display:grid;grid-template-columns:1fr 1fr;gap:38px;align-items:center}
+    .mission .eyebrow{color:var(--lime)}
+    .mission p{color:#e0ebdf}
+    .mission h2{margin-bottom:0}
+
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:#fff;border:1px solid var(--line);padding:27px;border-radius:var(--radius)}
+    .card p{color:var(--muted);margin-bottom:0}
+    .number{width:42px;height:42px;background:var(--soft);border-radius:13px;display:grid;place-items:center;font-weight:800;margin-bottom:20px}
+
+    .role-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .role{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px}
+    .role .role-tag{display:inline-block;padding:5px 9px;border-radius:100px;background:var(--soft);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--green)}
+    .role ul{margin:15px 0 0;padding-left:18px;color:var(--muted);font-size:.88rem}
+    .role li{margin:7px 0}
+
+    .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:30px}
+    .flow-step{position:relative;background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px}
+    .flow-step strong{display:block;margin-bottom:5px}
+    .flow-step p{font-size:.84rem;color:var(--muted);margin:0}
+
+    .register-wrap{display:grid;grid-template-columns:1fr 1fr;gap:65px;align-items:start}
+    form{background:#fff;border:1px solid var(--line);padding:30px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    label.field{display:block;font-size:.88rem;font-weight:700;margin-bottom:18px}
+    input:not([type=checkbox]){width:100%;margin-top:7px;padding:13px 15px;border:1px solid #b6c3b3;border-radius:12px;background:#fcfdf9;color:var(--ink)}
+    input[type=checkbox]{width:18px;height:18px;accent-color:var(--green);flex-shrink:0}
+    .check{display:flex;align-items:flex-start;gap:10px;font-size:.82rem;color:var(--muted);margin-bottom:20px}
+    form .button{width:100%}
+    .status{font-size:.88rem;margin:14px 0 0}
+    .status.error{color:#a32720}
+    .status.success{color:var(--green)}
+
+    details{border-bottom:1px solid var(--line);padding:18px 0}
+    summary{cursor:pointer;font-weight:700}
+    details p{color:var(--muted);padding-top:10px;margin-bottom:0}
+
+    footer{border-top:1px solid var(--line);padding:28px 0 100px}
+    .footer-row{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+    .mode{font-size:.74rem;border-radius:100px;background:#eaf0e3;padding:6px 12px}
+
+    .consent{position:fixed;z-index:50;bottom:18px;left:50%;transform:translateX(-50%);width:min(950px,calc(100% - 28px));padding:19px;border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 65px #10231733;background:#fff;display:flex;align-items:center;gap:22px}
+    .consent p{margin:0;font-size:.82rem;color:var(--muted)}
+    .consent strong{color:var(--ink);display:block}
+    .consent-actions{display:flex;flex-shrink:0;gap:9px}
+    [hidden]{display:none!important}
+
+    @media(max-width:900px){
+      .role-grid{grid-template-columns:repeat(2,1fr)}
+      .hero{grid-template-columns:1fr}
+      .cards{grid-template-columns:1fr}
+      .flow{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media(max-width:800px){
+      nav{display:none;position:absolute;top:84px;left:0;right:0;padding:24px;background:var(--bg);border-bottom:1px solid var(--line)}
+      nav.open{display:flex;flex-direction:column}
+      .menu-toggle{display:inline-flex}
+      .mission,.register-wrap{grid-template-columns:1fr}
+      .consent{flex-direction:column;align-items:stretch}
+      .consent-actions{justify-content:flex-end}
+    }
+
+    @media(max-width:520px){
+      .container{width:min(100% - 28px,1120px)}
+      .strip,.role-grid,.flow{grid-template-columns:1fr}
+      .hero-art,.hero-image{min-height:330px}
+      .mission{padding:28px}
+      form{padding:24px}
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a href="#main" class="brand">
+      <span class="brand-mark">G</span>GameFarm
+    </a>
+
+    <button class="button outline small menu-toggle" id="menuToggle" aria-controls="navigation" aria-expanded="false">
+      Menu
+    </button>
+
+    <nav id="navigation">
+
+      <a href="#about">The project</a>
+      <a href="#features">Features</a>
+      <a href="#roles">Roles</a>
+      <a href="#faq">Questions</a>
+
+      <!-- ADDED SURVEY BUTTON ONLY -->
+      <a
+        href="https://docs.google.com/forms/d/e/1FAIpQLScxbbjiFI3dhusiKE1BDFxa96NMj2PiiYKB3r4gQoI5g1RZg/viewform?usp=header"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="button small"
+      >
+        SURVEY ↗
+      </a>
+
+      <a href="#register" class="button small">Register Interest ↗</a>
+
+    </nav>
+  </div>
+</header>
+
+
+<main id="main">
+
+  <div class="container">
+
+    <section class="hero">
+
+      <div>
+
+        <span class="eyebrow badge">
+          <span class="dot"></span>
+          Introducing GameFarm
+        </span>
+
+        <h1>
+          Plan better.<br>
+          Work smarter.<br>
+          <em>Grow together.</em>
+        </h1>
+
+        <p class="lead">
+          GameFarm is a web-based Planning and Development Management
+          System designed to organize farm activities, schedules,
+          records, tasks, and development information in one
+          centralized local platform.
+        </p>
+
+        <div class="actions">
+
+          <a href="#about" class="button">
+            Explore GameFarm ↗
+          </a>
+
+          <a href="#features" class="button outline">
+            View Features
+          </a>
+
+        </div>
+
+        <p class="fine">
+          Designed for authorized Farm Owners/Administrators,
+          Breeders, Trainers, and Farm Staff.
+        </p>
+
+      </div>
+
+
+      <!-- CHANGE ONLY THE URL BELOW TO REPLACE THE CIRCLED IMAGE -->
+      <div class="hero-art">
+
+        <img
+          id="heroImage"
+          class="hero-image"
+          src="cock.png"
+          alt="GameFarm project image"
+        >
+
+        <div class="image-overlay"></div>
+
+        <span class="image-label">
+          GAMEFARM / PLANNING & DEVELOPMENT
+        </span>
+
+        <div class="art-card">
+          <strong>
+            One farm. One organized workspace.
+          </strong>
+
+          <span>
+            Plan activities, assign work, manage development,
+            and review farm information.
+          </span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <div class="strip">
+      <span>01 &nbsp; Centralized Farm Management</span>
+      <span>02 &nbsp; Role-Based Access</span>
+      <span>03 &nbsp; Offline Local Environment</span>
+    </div>
+
+
+    <section class="section" id="about">
+
+      <div class="section-heading">
+
+        <span class="eyebrow">The project</span>
+
+        <h2>
+          Get to know GameFarm.
+        </h2>
+
+        <p>
+          The proposed system addresses the difficulty of manually
+          handling feeding, health care, breeding, conditioning,
+          incubation, growth monitoring, and farm maintenance.
+        </p>
+
+      </div>
+
+
+      <div class="mission">
+
+        <div>
+
+          <span class="eyebrow">
+            Our purpose
+          </span>
+
+          <h2>
+            Organize, schedule, assign, and monitor farm activities
+            in one place.
+          </h2>
+
+        </div>
+
+        <div>
+
+          <p>
+            GameFarm provides a centralized platform that helps users
+            identify what needs to be done, when it should be done,
+            and who is assigned to perform the task.
+          </p>
+
+          <a href="#features" class="button light">
+            See system features ↗
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <div style="height:24px"></div>
+
+      <p class="draft">
+        <strong>Implementation:</strong>
+        The proposed system is intended for the SM (Salvador Montilla)
+        GameFarm in Tacurong City. It is designed as a web-based system
+        that can operate offline through a local environment and be
+        accessed through a browser on supported devices.
+      </p>
+
+    </section>
+
+
+    <section class="section" id="features">
+
+      <div class="section-heading">
+
+        <span class="eyebrow">
+          System features
+        </span>
+
+        <h2>
+          Everything is connected around the farm workflow.
+        </h2>
+
+        <p>
+          These features are based on the proposed GameFarm system
+          described in the project document.
+        </p>
+
+      </div>
+
+
+      <div class="cards">
+
+        <article class="card">
+          <span class="number">01</span>
+          <h3>Smart Farm Planner</h3>
+          <p>
+            Organizes and plans different farm activities so users
+            can see what needs to be done and when.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="number">02</span>
+          <h3>Farm Activity Management</h3>
+          <p>
+            Creates and manages schedules for feeding, health care,
+            conditioning, and other farm activities while helping
+            identify overlapping activities.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="number">03</span>
+          <h3>Breeding, Incubation & Growth</h3>
+          <p>
+            Organizes breeding records, parentage, offspring,
+            bloodline relationships, incubation timelines,
+            reminders, and growth progress.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="number">04</span>
+          <h3>Maintenance & Inventory</h3>
+          <p>
+            Organizes farm and equipment maintenance activities
+            and monitors farm supplies and resources through
+            integrated inventory management.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="number">05</span>
+          <h3>Conflict & Workload Management</h3>
+          <p>
+            Identifies conflicting or overlapping schedules
+            and helps distribute tasks among staff.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="number">06</span>
+          <h3>Farm Dashboard</h3>
+          <p>
+            Displays upcoming tasks, progress, and important
+            farm information for easier review.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="number">07</span>
+          <h3>Reports & Analytics</h3>
+          <p>
+            Provides organized reports for farm activities and
+            records to support review and management.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="number">08</span>
+          <h3>Centralized Farm Information</h3>
+          <p>
+            Keeps farm planning, records, task assignments,
+            development information, and important information
+            within one local platform.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="number">09</span>
+          <h3>Role-Based Access</h3>
+          <p>
+            Authorized users access functions according to their
+            assigned role: Farm Owner/Administrator, Breeder,
+            Trainer, or Farm Staff.
+          </p>
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <section class="section" id="roles">
+
+      <div class="section-heading">
+
+        <span class="eyebrow">
+          Role-based access
+        </span>
+
+        <h2>
+          Different users. Different responsibilities.
+        </h2>
+
+        <p>
+          Each role is given access that matches its
+          responsibilities in the farm workflow.
+        </p>
+
+      </div>
+
+
+      <div class="role-grid">
+
+        <article class="role">
+
+          <span class="role-tag">
+            Administrator
+          </span>
+
+          <h3>
+            Farm Owner / Administrator
+          </h3>
+
+          <ul>
+            <li>Manages overall farm operations</li>
+            <li>Manages users and farm information</li>
+            <li>Reviews schedules, reports, and dashboards</li>
+          </ul>
+
+        </article>
+
+
+        <article class="role">
+
+          <span class="role-tag">
+            Breeding
+          </span>
+
+          <h3>
+            Breeder
+          </h3>
+
+          <ul>
+            <li>Manages breeding records</li>
+            <li>Views pedigree relationships</li>
+            <li>Plans breeding activities</li>
+            <li>Monitors development information</li>
+          </ul>
+
+        </article>
+
+
+        <article class="role">
+
+          <span class="role-tag">
+            Conditioning
+          </span>
+
+          <h3>
+            Trainer
+          </h3>
+
+          <ul>
+            <li>Manages conditioning activities</li>
+            <li>Views conditioning schedules</li>
+            <li>Records development-related activities</li>
+          </ul>
+
+        </article>
+
+
+        <article class="role">
+
+          <span class="role-tag">
+            Operations
+          </span>
+
+          <h3>
+            Farm Staff
+          </h3>
+
+          <ul>
+            <li>Views assigned tasks</li>
+            <li>Follows feeding and maintenance schedules</li>
+            <li>Updates the status of assigned activities</li>
+          </ul>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <section class="section">
+
+      <div class="section-heading">
+
+        <span class="eyebrow">
+          System workflow
+        </span>
+
+        <h2>
+          From planning to final review.
+        </h2>
+
+        <p>
+          The workflow connects scheduling, assignments,
+          activity updates, progress monitoring, and review.
+        </p>
+
+      </div>
+
+
+      <div class="flow">
+
+        <div class="flow-step">
+          <strong>01 — Plan</strong>
+          <p>
+            Create and organize farm activities and schedules.
+          </p>
+        </div>
+
+        <div class="flow-step">
+          <strong>02 — Assign</strong>
+          <p>
+            Check conflicts and workload, then assign tasks.
+          </p>
+        </div>
+
+        <div class="flow-step">
+          <strong>03 — Perform & Update</strong>
+          <p>
+            Users perform assigned activities and submit
+            status updates.
+          </p>
+        </div>
+
+        <div class="flow-step">
+          <strong>04 — Monitor & Review</strong>
+          <p>
+            Review dashboards, progress, records, and reports.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="section" id="register">
+
+      <div class="register-wrap">
+
+        <div>
+
+          <span class="eyebrow">
+            Take the next step
+          </span>
+
+          <h2>
+            Interested?<br>
+            Let’s keep in touch.
+          </h2>
+
+          <p class="lead">
+            Register your interest in the GameFarm project
+            using the form.
+          </p>
+
+          <div class="flow" style="grid-template-columns:1fr">
+
+            <div class="flow-step">
+              <strong>Explore</strong>
+              <p>
+                Learn about the purpose, features, roles,
+                and workflow.
+              </p>
+            </div>
+
+            <div class="flow-step">
+              <strong>Register</strong>
+              <p>
+                Share your name and email to record your interest.
+              </p>
+            </div>
+
+            <div class="flow-step">
+              <strong>Confirmation</strong>
+              <p>
+                A confirmation appears after the server
+                confirms the registration.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <form id="registrationForm" aria-describedby="formStatus">
+
+          <h3>
+            Register your interest
+          </h3>
+
+          <p class="fine">
+            Fields marked * are required.
+          </p>
+
+          <label class="field" for="fullName">
+            Full name *
+            <input
+              id="fullName"
+              name="fullName"
+              autocomplete="name"
+              required
+              minlength="2"
+              maxlength="100"
+            >
+          </label>
+
+          <label class="field" for="email">
+            Email address *
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+              maxlength="254"
+            >
+          </label>
+
+          <label class="check">
+            <input
+              type="checkbox"
+              id="registrationConsent"
+              required
+            >
+            <span>
+              I agree that the project team may store my name
+              and email to process my GameFarm registration.
+              <a href="#privacy">Read the privacy notice.</a>
+            </span>
+          </label>
+
+          <p class="fine">
+            Analytics are optional. You can register without
+            accepting analytics.
+          </p>
+
+          <button
+            class="button"
+            id="submitButton"
+            type="submit"
+          >
+            Register my interest ↗
+          </button>
+
+          <p
+            class="status"
+            id="formStatus"
+            role="status"
+            aria-live="polite"
+          ></p>
+
+        </form>
+
+      </div>
+
+    </section>
+
+
+    <section class="section" id="faq">
+
+      <div class="section-heading">
+
+        <span class="eyebrow">
+          Good to know
+        </span>
+
+        <h2>
+          A few quick answers.
+        </h2>
+
+      </div>
+
+
+      <details>
+        <summary>
+          Where will GameFarm be used?
+        </summary>
+
+        <p>
+          The proposed system will be implemented at the
+          SM (Salvador Montilla) GameFarm in Tacurong City
+          as a web-based system that can operate offline
+          through a local environment.
+        </p>
+      </details>
+
+
+      <details>
+        <summary>
+          Who can access the system?
+        </summary>
+
+        <p>
+          Authorized users include the Farm Owner/Administrator,
+          Breeder, Trainer, and Farm Staff, with access based
+          on their assigned roles.
+        </p>
+      </details>
+
+
+      <details>
+        <summary>
+          Does the system require internet?
+        </summary>
+
+        <p>
+          The project document describes GameFarm as a web-based
+          system that can operate offline through a local environment,
+          so internet access is not required for the local operation
+          described in the proposal.
+        </p>
+      </details>
+
+
+      <details>
+        <summary>
+          What does role-based access mean?
+        </summary>
+
+        <p>
+          It means each authorized user works with functions
+          related to their responsibility. For example, the
+          Administrator manages users and farm information,
+          the Breeder handles breeding records, the Trainer
+          handles conditioning activities, and Farm Staff
+          handles assigned operational tasks.
+        </p>
+      </details>
+
+
+      <details id="privacy">
+
+        <summary>
+          How is my registration information used?
+        </summary>
+
+        <p>
+          Registration information is stored in the project
+          team's private Google Sheet. Analytics are optional
+          and can be declined without affecting registration.
+        </p>
+
+        <button
+          class="button outline small"
+          type="button"
+          id="privacyPreferences"
+          style="margin-top:12px"
+        >
+          Change analytics preferences
+        </button>
+
+      </details>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container footer-row">
+
+    <a href="#main" class="brand">
+      <span class="brand-mark">G</span>
+      GameFarm
+    </a>
+
+    <span class="fine">
+      Discover the project. Decide what comes next.
+    </span>
+
+    <span class="mode" id="trackingMode">
+      Preview — no data saved
+    </span>
+
+  </div>
+
+</footer>
+
+
+<aside
+  class="consent"
+  id="consentBanner"
+  aria-label="Analytics preferences"
+  hidden
+>
+
+  <p>
+    <strong>Your privacy, your choice.</strong>
+    Optional first-party analytics help count Learn More
+    clicks and subsequent registrations. Registration works either way.
+  </p>
+
+  <div class="consent-actions">
+
+    <button
+      class="button outline small"
+      id="declineAnalytics"
+      type="button"
+    >
+      Decline
+    </button>
+
+    <button
+      class="button small"
+      id="acceptAnalytics"
+      type="button"
+    >
+      Accept analytics
+    </button>
+
+  </div>
+
+</aside>
+
+
+<script>
+"use strict";
+
+const LIVE = Boolean(window.google && google.script && google.script.run);
+
+const KEYS = {
+  consent:"gamefarm.consent.v1",
+  visitor:"gamefarm.visitor.v1",
+  session:"gamefarm.session.v1",
+  queue:"gamefarm.queue.v1"
+};
+
+const TTL = 30*24*60*60*1000;
+
+const $ = id => document.getElementById(id);
+
+const storage = {
+
+  read(area,key,fallback=null){
+    try{
+      const raw=window[area].getItem(key);
+      return raw?JSON.parse(raw):fallback;
+    }catch(_){
+      return fallback;
+    }
+  },
+
+  write(area,key,value){
+    try{
+      window[area].setItem(key,JSON.stringify(value));
+    }catch(_){}
+  },
+
+  remove(area,key){
+    try{
+      window[area].removeItem(key);
+    }catch(_){}
+  }
+
+};
+
+function uuid(){
+
+  if(crypto.randomUUID)return crypto.randomUUID();
+
+  const b=crypto.getRandomValues(new Uint8Array(16));
+
+  b[6]=(b[6]&15)|64;
+  b[8]=(b[8]&63)|128;
+
+  const h=Array.from(
+    b,
+    x=>x.toString(16).padStart(2,"0")
+  ).join("");
+
+  return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
+
+}
+
+let consent=storage.read("localStorage",KEYS.consent);
+
+if(
+  !consent ||
+  !["accepted","declined"].includes(consent.value) ||
+  !Number.isFinite(consent.at) ||
+  Date.now()-consent.at>TTL
+){
+  consent=null;
+}
+
+let visitorId="";
+let sessionId="";
+let queue=[];
+let flushPromise=null;
+let registrationAttempt=null;
+let preferencesOpen=false;
+
+function accepted(){
+  return consent?.value==="accepted";
+}
+
+function clearLocalAnalytics(){
+
+  visitorId="";
+  sessionId="";
+  queue=[];
+
+  storage.remove("localStorage",KEYS.visitor);
+  storage.remove("localStorage",KEYS.queue);
+  storage.remove("sessionStorage",KEYS.session);
+
+}
+
+function initializeAnalytics(){
+
+  if(!accepted())return;
+
+  const saved=storage.read(
+    "localStorage",
+    KEYS.visitor
+  );
+
+  if(
+    saved &&
+    typeof saved.id==="string" &&
+    Number.isFinite(saved.at) &&
+    Date.now()-saved.at<TTL
+  ){
+
+    visitorId=saved.id;
+
+  }else{
+
+    visitorId=uuid();
+
+    storage.write(
+      "localStorage",
+      KEYS.visitor,
+      {
+        id:visitorId,
+        at:Date.now()
+      }
+    );
+
+    storage.remove(
+      "localStorage",
+      KEYS.queue
+    );
+
+  }
+
+  const existing=storage.read(
+    "sessionStorage",
+    KEYS.session
+  );
+
+  sessionId=
+    typeof existing==="string"
+      ?existing
+      :uuid();
+
+  storage.write(
+    "sessionStorage",
+    KEYS.session,
+    sessionId
+  );
+
+  const savedQueue=storage.read(
+    "localStorage",
+    KEYS.queue,
+    []
+  );
+
+  queue=Array.isArray(savedQueue)
+    ?savedQueue
+      .filter(
+        e =>
+          e &&
+          e.eventType==="learn_more_click" &&
+          e.visitorId===visitorId &&
+          Date.now()-Date.parse(e.clientTimestamp)<TTL
+      )
+      .slice(-100)
+    :[];
+
+}
+
+function updatePrivacyUI(){
+
+  $("consentBanner").hidden=
+    Boolean(consent) && !preferencesOpen;
+
+  $("trackingMode").textContent=
+    !LIVE
+      ?"Preview — no data saved"
+      :accepted()
+        ?"Analytics enabled"
+        :"Analytics off · registration available";
+
+}
+
+function setConsent(value){
+
+  consent={
+    value,
+    at:Date.now()
+  };
+
+  storage.write(
+    "localStorage",
+    KEYS.consent,
+    consent
+  );
+
+  preferencesOpen=false;
+
+  if(accepted()){
+
+    initializeAnalytics();
+    flushQueue();
+
+  }else{
+
+    clearLocalAnalytics();
+
+  }
+
+  updatePrivacyUI();
+
+}
+
+function attribution(){
+
+  let params=new URLSearchParams();
+  let pagePath="/";
+  let referrerHost="";
+
+  try{
+
+    const u=new URL(location.href);
+
+    params=u.searchParams;
+    pagePath=u.pathname.slice(0,200);
+
+    if(
+      location.hostname.endsWith(
+        "googleusercontent.com"
+      ) ||
+      location.hostname==="script.google.com"
+    ){
+
+      pagePath="/";
+
+    }
+
+  }catch(_){}
+
+  try{
+
+    referrerHost=
+      new URL(document.referrer).hostname;
+
+  }catch(_){}
+
+  const campaign=n=>
+    (params.get(n)||"")
+      .replace(
+        /[^a-zA-Z0-9 ._-]/g,
+        ""
+      )
+      .slice(0,100);
+
+  return {
+    pagePath,
+    referrerHost,
+    utmSource:campaign("utm_source"),
+    utmMedium:campaign("utm_medium"),
+    utmCampaign:campaign("utm_campaign")
+  };
+
+}
+
+function createEvent(
+  eventType,
+  ctaLocation=""
+){
+
+  return {
+    eventId:uuid(),
+    eventType,
+    clientTimestamp:new Date().toISOString(),
+    visitorId:accepted()?visitorId:"",
+    sessionId:accepted()?sessionId:"",
+    analyticsConsent:accepted(),
+    ctaLocation,
+    ...(accepted()?attribution():{})
+  };
+
+}
+
+function rpc(payload){
+
+  return new Promise(
+    (resolve,reject)=>{
+
+      if(!LIVE){
+
+        return reject(
+          new Error(
+            "Preview only. Deploy the Apps Script backend to accept submissions."
+          )
+        );
+
+      }
+
+      const timeout=setTimeout(
+        () =>
+          reject(
+            new Error(
+              "Confirmation timed out. Retry without changing your details."
+            )
+          ),
+        25000
+      );
+
+      google.script.run
+        .withSuccessHandler(
+          result=>{
+
+            clearTimeout(timeout);
+
+            if(
+              result?.ok &&
+              result.eventId===payload.eventId
+            ){
+
+              resolve(result);
+
+            }else{
+
+              reject(
+                new Error(
+                  "The server did not confirm this submission."
+                )
+              );
+
+            }
+
+          }
+        )
+        .withFailureHandler(
+          ()=>{
+
+            clearTimeout(timeout);
+
+            reject(
+              new Error(
+                "Unable to confirm saving. Check your connection and retry."
+              )
+            );
+
+          }
+        )
+        .recordEvent(payload);
+
+    }
+  );
+
+}
+
+function persistQueue(){
+
+  if(accepted()){
+
+    storage.write(
+      "localStorage",
+      KEYS.queue,
+      queue
+    );
+
+  }
+
+}
+
+function flushQueue(){
+
+  if(
+    !LIVE ||
+    !accepted() ||
+    !navigator.onLine
+  ){
+
+    return Promise.resolve();
+
+  }
+
+  if(flushPromise)return flushPromise;
+
+  flushPromise=(async()=>{
+
+    while(
+      queue.length &&
+      accepted()
+    ){
+
+      const event=queue[0];
+
+      try{
+
+        await rpc(event);
+
+        queue=queue.filter(
+          x=>x.eventId!==event.eventId
+        );
+
+        persistQueue();
+
+      }catch(_){
+
+        break;
+
+      }
+
+    }
+
+  })().finally(
+    ()=>flushPromise=null
+  );
+
+  return flushPromise;
+
+}
+
+
+document
+  .querySelectorAll("[data-learn]")
+  .forEach(
+    link =>
+      link.addEventListener(
+        "click",
+        ()=>{
+          if(!LIVE || !accepted())return;
+
+          queue.push(
+            createEvent(
+              "learn_more_click",
+              link.dataset.learn
+            )
+          );
+
+          queue=queue.slice(-100);
+
+          persistQueue();
+          flushQueue();
+
+        }
+      )
+  );
+
+
+function showFormStatus(
+  message,
+  type=""
+){
+
+  $("formStatus").textContent=message;
+
+  $("formStatus").className=
+    `status ${type}`;
+
+}
+
+
+$("registrationForm")
+  .addEventListener(
+    "submit",
+    async e=>{
+
+      e.preventDefault();
+
+      if(
+        !$("registrationForm")
+          .reportValidity()
+      ){
+
+        return;
+
+      }
+
+      if(!LIVE){
+
+        showFormStatus(
+          "Preview only. Deploy the Apps Script backend to accept registrations.",
+          "error"
+        );
+
+        return;
+
+      }
+
+      const fullName=
+        $("fullName").value.trim();
+
+      const email=
+        $("email").value.trim().toLowerCase();
+
+      const signature=
+        JSON.stringify([
+          fullName,
+          email,
+          accepted()
+        ]);
+
+      if(
+        !registrationAttempt ||
+        registrationAttempt.signature!==signature
+      ){
+
+        registrationAttempt={
+          signature,
+          payload:{
+            ...createEvent(
+              "registration",
+              "registration_form"
+            ),
+            fullName,
+            email,
+            registrationConsent:true
+          }
+        };
+
+      }
+
+      $("submitButton").disabled=true;
+      $("submitButton").textContent="Saving…";
+
+      showFormStatus(
+        "Waiting for server confirmation."
+      );
+
+      try{
+
+        await flushQueue();
+
+        if(!accepted()){
+
+          Object.assign(
+            registrationAttempt.payload,
+            {
+              analyticsConsent:false,
+              visitorId:"",
+              sessionId:"",
+              pagePath:"",
+              referrerHost:"",
+              utmSource:"",
+              utmMedium:"",
+              utmCampaign:""
+            }
+          );
+
+        }
+
+        const result=
+          await rpc(
+            registrationAttempt.payload
+          );
+
+        showFormStatus(
+          `Your interest is registered. Reference: ${result.eventId.slice(0,8)}.`,
+          "success"
+        );
+
+        $("registrationForm").reset();
+
+        registrationAttempt=null;
+
+      }catch(error){
+
+        showFormStatus(
+          error.message,
+          "error"
+        );
+
+      }finally{
+
+        $("submitButton").disabled=false;
+
+        $("submitButton").textContent=
+          "Register my interest ↗";
+
+      }
+
+    }
+  );
+
+
+$("menuToggle")
+  .addEventListener(
+    "click",
+    ()=>{
+      const open=
+        $("navigation")
+          .classList
+          .toggle("open");
+
+      $("menuToggle")
+        .setAttribute(
+          "aria-expanded",
+          String(open)
+        );
+
+    }
+  );
+
+
+$("navigation")
+  .querySelectorAll("a")
+  .forEach(
+    a =>
+      a.addEventListener(
+        "click",
+        ()=>{
+          $("navigation")
+            .classList
+            .remove("open");
+
+          $("menuToggle")
+            .setAttribute(
+              "aria-expanded",
+              "false"
+            );
+
+        }
+      )
+  );
+
+
+$("acceptAnalytics")
+  .addEventListener(
+    "click",
+    ()=>setConsent("accepted")
+  );
+
+
+$("declineAnalytics")
+  .addEventListener(
+    "click",
+    ()=>setConsent("declined")
+  );
+
+
+$("privacyPreferences")
+  .addEventListener(
+    "click",
+    ()=>{
+      preferencesOpen=true;
+      updatePrivacyUI();
+      $("declineAnalytics").focus();
+    }
+  );
+
+
+if(accepted()){
+
+  initializeAnalytics();
+
+}else{
+
+  clearLocalAnalytics();
+
+}
+
+updatePrivacyUI();
+
+flushQueue();
+
+window.addEventListener(
+  "online",
+  flushQueue
+);
+
+setInterval(
+  flushQueue,
+  15000
+);
+
+</script>
+
+</body>
+</html>
